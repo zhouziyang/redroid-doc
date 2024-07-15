@@ -1,0 +1,15 @@
+redroid:
+  args:
+  - redroid.width=720
+  - redroid.height=1280
+  - ro.sf.lcd_density=320
+  image:
+    repository: redroid/redroid
+    tag: 12.0.0-latest
+  volumes:
+  - name: data
+    hostPath:
+      path : /root/frank/data12
+  volumeMounts:
+  - mountPath: /data
+    name: data

@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: redroid
+  name: {{ template "redroid.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+{{- include "redroid.imagePullSecrets" . | indent 4 }}
+  {{- if .Values.redroid.nodeSelector }}
+  nodeSelector:
+{{ toYaml .Values.redroid.nodeSelector | indent 4 }}
+  {{- end }}
+  containers:
+  - args:
+{{ toYaml .Values.redroid.args | indent 4 }}
+    image: {{ template "redroid.image" . }}
+    name: redroid
+    volumeMounts:
+    {{- if .Values.persistence.enable }}
+    - mountPath: /data
+      name: data
+    {{- end }}
+    {{- if .Values.redroid.volumeMounts }}
+{{ toYaml .Values.redroid.volumeMounts | indent 4 }}
+    {{- end }}
+    securityContext:
+      privileged: True
+    stdin: true
+    tty: true
+    resources:
+{{ toYaml .Values.redroid.resources | indent 6 }}
+  volumes:
+  {{- if .Values.persistence.enable }}
+  - name: data
+    persistentVolumeClaim:
+      claimName: {{ template "redroid.pvc" . }}
+  {{- end }}
+  {{- if .Values.redroid.volumes }}
+{{ toYaml .Values.redroid.volumes | indent 2 }}
+  {{- end }}
+  restartPolicy: Never
+  terminationGracePeriodSeconds: 0
+  {{- if .Values.redroid.tolerations }}
+  tolerations:
+{{ toYaml .Values.redroid.tolerations | indent 4 }}
+  {{- end }}

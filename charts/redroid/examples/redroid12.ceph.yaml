@@ -1,0 +1,30 @@
+persistence:
+  # -- enable persistence
+  enable: true
+
+  # -- use existing PVC (use release name as subpath); create new PVC if level empty
+  existingClaim:
+
+  # -- access mode of persistent volume claim
+  accessMode: ReadWriteOnce
+
+  # -- persistent volume annotations
+  annotations: {}
+
+  # -- persistent volume labels
+  labels: {}
+
+  # -- size of persistent volume claim
+  size: 10Gi
+
+  # -- type of persistent volume claim
+  storageClass: csi-rbd-sc
+
+redroid:
+  args:
+  - redroid.width=720
+  - redroid.height=1280
+  - ro.sf.lcd_density=320
+  image:
+    repository: redroid/redroid
+    tag: 12.0.0-latest

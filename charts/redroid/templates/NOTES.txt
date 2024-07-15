@@ -1,0 +1,15 @@
+Upgrade:
+    helm upgrade {{ .Release.Name }} <Chart> -f <Config>.yaml
+
+Uninstall:
+    helm uninstall {{ .Release.Name }}
+
+Rollback:
+    helm rollback {{ .Release.Name }} <REV.>
+
+Delete Failed Release:
+    kubectl delete deploy,svc,cronjob,job,pod,pvc \
+        -l cleanup=auto,app.kubernetes.io/instance={{ .Release.Name }} \
+        -n {{ .Release.Namespace }} --force --grace-period=0 --wait=false
+
+    helm uninstall {{ .Release.Name }} --no-hooks

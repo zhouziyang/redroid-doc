@@ -1,0 +1,41 @@
+services:
+  redroid:
+    image: r12
+    command:
+    - androidboot.use_redroid_stream=1
+    privileged: true
+    stdin_open: true
+    tty: true
+    ports:
+    - "5555"
+    volumes:
+    - ipc:/ipc
+    - ${HOME}/r12-build/system/system:/system:ro
+    - ${HOME}/r12-build/vendor:/vendor:ro
+  webrtc_operator:
+    image: webrtc-dev
+    build:
+      context: ./builder
+    command:
+    - webrtc_operator
+    tty: true
+    stdin_open: true
+    network_mode: host
+    volumes:
+    - /var/www:/var/www:ro
+    - ${HOME}/sysroot.linux/usr/local:/usr/local:ro
+  webrtc:
+    image: webrtc-dev
+    command: bash -c "ldconfig && echo {} > ~/.cuttlefish_config.json && webrtc"
+    privileged: true
+    tty: true
+    stdin_open: true
+    network_mode: host
+    depends_on:
+    - redroid
+    - webrtc_operator
+    volumes:
+    - ipc:/ipc
+    - ${HOME}/sysroot.linux/usr/local:/usr/local:ro
+volumes:
+  ipc:

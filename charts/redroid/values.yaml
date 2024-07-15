@@ -1,0 +1,74 @@
+
+global:
+  # -- global image registry, this will override image parameters
+  imageRegistry:
+
+  # -- global image pull secrets, this will override image parameters
+  imagePullSecrets: []
+
+persistence:
+  # -- enable persistence
+  enable: false
+
+  # -- use existing PVC (use release name as subpath); create new PVC if level empty
+  existingClaim:
+
+  # -- access mode of persistent volume claim
+  accessMode: ReadWriteOnce
+
+  # -- persistent volume annotations
+  annotations: {}
+
+  # -- persistent volume labels
+  labels: {}
+
+  # -- size of persistent volume claim
+  size: 10Gi
+
+  # -- type of persistent volume claim
+  storageClass:
+
+redroid:
+  # -- extra arguments
+  args: []
+
+  image:
+    # -- docker image repository for redroid
+    repository: redroid/redroid
+
+    # -- docker image tag for redriod
+    tag: latest
+
+  # -- enable debug mode (print debug log etc.)
+  debug: false
+
+  metrics:
+    # -- start a side-car prometheus exporter
+    enabled: false
+
+  # -- node selector
+  nodeSelector: {}
+
+  # -- tolerations
+  tolerations: []
+
+  # -- resource allocation for redroid POD
+  resources:
+    requests:
+      cpu: 4
+      memory: 1Gi
+    limits:
+      cpu: 8
+      memory: 4Gi
+  
+  # -- extra volumes
+  volumes: []
+
+  # -- extra volume mount
+  volumeMounts: []
+
+# -- override the Chart name
+nameOverride:
+
+# -- override default fully qualified app name
+fullnameOverride:

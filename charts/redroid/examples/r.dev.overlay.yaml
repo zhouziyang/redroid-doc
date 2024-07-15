@@ -1,0 +1,31 @@
+redroid:
+  args:
+  - redroid.overlay=1
+  - redroid.width=720
+  - redroid.height=1280
+  - ro.sf.lcd_density=320
+  - redroid.fps=30
+  image:
+    repository: localhost:32000/r9
+  volumes:
+  - name: img
+    hostPath:
+      path : /root/r9
+  - name: data-base
+    hostPath:
+      path: /root/frank/data-base2
+  - name: data-diff
+    emptyDir: {}
+  volumeMounts:
+  - mountPath: /system
+    name: img
+    subPath: system
+  - mountPath: /vendor
+    name: img
+    subPath: vendor
+  - mountPath: /data-base
+    name: data-base
+    readOnly: true
+  - mountPath: /data-diff
+    name: data-diff
+

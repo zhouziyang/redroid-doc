@@ -1,0 +1,16 @@
+redroid:
+  args:
+  - redroid.width=720
+  - redroid.height=1280
+  - ro.sf.lcd_density=320
+  - redroid.fps=30
+  image:
+    repository: redroid/redroid
+    tag: 9.0.0-latest
+  volumes:
+  - name: data
+    emptyDir: {}
+  volumeMounts:
+  - mountPath: /data
+    name: data
+

@@ -1,0 +1,21 @@
+redroid:
+  args:
+  - ro.cold_boot_done=true
+  image:
+    repository: localhost:32000/r12
+  volumes:
+  - name: img
+    hostPath:
+      path : /root/frank/r12
+  - name: data
+    emptyDir: {}
+  volumeMounts:
+  - mountPath: /system
+    name: img
+    subPath: system/system
+  - mountPath: /vendor
+    name: img
+    subPath: vendor
+  - mountPath: /data
+    name: data
+

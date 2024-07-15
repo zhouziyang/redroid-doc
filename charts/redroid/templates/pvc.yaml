@@ -1,0 +1,28 @@
+{{- if and (and .Values.persistence.enable .Release.IsInstall) (not .Values.persistence.existingClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "-100"
+    "helm.sh/hook-delete-policy": hook-failed
+{{- with .Values.persistence.annotations  }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+  labels:
+{{ include "redroid.labels" . | indent 4 }}
+{{- with .Values.persistence.labels  }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+  name: {{ template "redroid.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+  - {{ .Values.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size | quote }}
+{{- if .Values.persistence.storageClass }}
+  storageClassName: "{{ .Values.persistence.storageClass }}"
+{{- end }}
+{{- end }}
